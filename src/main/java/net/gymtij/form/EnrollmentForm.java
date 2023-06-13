@@ -3,6 +3,8 @@ package net.gymtij.form;
 import com.digitalpersona.onetouch.*;
 import com.digitalpersona.onetouch.processing.*;
 import java.awt.*;
+import java.util.Base64;
+
 import javax.swing.JOptionPane;
 
 public class EnrollmentForm extends CaptureForm
@@ -16,7 +18,7 @@ public class EnrollmentForm extends CaptureForm
 	@Override protected void init()
 	{
 		super.init();
-		this.setTitle("Fingerprint Enrollment");
+		this.setTitle("Enrolamiento de huellas");
 		updateStatus();
 	}
 
@@ -28,7 +30,7 @@ public class EnrollmentForm extends CaptureForm
 		// Check quality of the sample and add to enroller if it's good
 		if (features != null) try
 		{
-			makeReport("The fingerprint feature set was created.");
+			makeReport("Configuración activada.");
 			enroller.addFeatures(features);		// Add feature set to template.
 		}
 		catch (DPFPImageQualityException ex) { }
@@ -41,7 +43,11 @@ public class EnrollmentForm extends CaptureForm
 				case TEMPLATE_STATUS_READY:	// report success and stop capturing
 					stop();
 					((MainForm)getOwner()).setTemplate(enroller.getTemplate());
-					setPrompt("Click Close, and then click Fingerprint Verification.");
+
+					DPFPTemplate template = enroller.getTemplate();
+					byte[] bytes = template.serialize();
+					String string = Base64.getEncoder().encodeToString(bytes);
+					setPrompt("Click Close, and then click Fingerprint Verification. Base 64: "+string);
 					break;
 
 				case TEMPLATE_STATUS_FAILED:	// report failure and restart capturing
@@ -49,7 +55,7 @@ public class EnrollmentForm extends CaptureForm
 					stop();
 					updateStatus();
 					((MainForm)getOwner()).setTemplate(null);
-					JOptionPane.showMessageDialog(EnrollmentForm.this, "The fingerprint template is not valid. Repeat fingerprint enrollment.", "Fingerprint Enrollment", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EnrollmentForm.this, "La lectura de huella no es adecuada.", "Enrolamiento", JOptionPane.ERROR_MESSAGE);
 					start();
 					break;
 			}
@@ -59,7 +65,7 @@ public class EnrollmentForm extends CaptureForm
 	private void updateStatus()
 	{
 		// Show number of samples needed.
-		setStatus(String.format("Fingerprint samples needed: %1$s", enroller.getFeaturesNeeded()));
+		setStatus(String.format("Huellas por dedo necesarias: %1$s", enroller.getFeaturesNeeded()));
 	}
 	
 }
