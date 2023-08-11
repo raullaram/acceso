@@ -12,9 +12,10 @@ public class ConfigReader {
 
     ConfigReader() {
 		BufferedReader reader;
-	    	String propertyFilePath = "./Configuration.properties";
+		
+	    	// String propertyFilePath = "./Configuration.properties";
 	        try {
-	            reader = new BufferedReader(new FileReader(propertyFilePath));
+	            reader = new BufferedReader(new FileReader("src\\main\\java\\net\\gymtij\\Configuration.properties"));
 	            properties = new Properties();
 	            try {
 	                properties.load(reader);
@@ -24,7 +25,7 @@ public class ConfigReader {
 	            }
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
-	            throw new RuntimeException("Configuration.properties no localizado " + propertyFilePath);
+	            throw new RuntimeException("Configuration.properties no localizado ");
 	        }		
 	}
 

@@ -19,14 +19,10 @@ import org.json.JSONObject;
 public class ConsultaSocio {
 
     public static Socio consultaSocio(String credencial) {
+  
 
-    // FileReader reader=new FileReader("Configuration.properties");  
-    // Properties p=new Properties();  
-    // p.load(reader);  
-
-        // String URL = "http://" + p.getProperty("serverIp") + ":5000/api/";
-
-        String URL = "http://192.168.0.76:5000/api/";
+        ConfigReader cr = new ConfigReader();
+        String URL = "http://" + cr.getServerIp() + ":5000/api/";
 
         try {
             // Creamos el cliente de conexión al API Restful

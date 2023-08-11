@@ -62,7 +62,7 @@ public class CaptureForm
 		status.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		status.setFont(UIManager.getFont("Panel.font"));
 		
-		credencial.setColumns(8);
+		credencial.setColumns(6);
 		credencial.setEditable(true);
 		credencial.setFont(UIManager.getFont("Panel.font"));
 		credencial.setMaximumSize(prompt.getPreferredSize());
@@ -72,7 +72,7 @@ public class CaptureForm
 					BorderFactory.createLoweredBevelBorder()
 				));
 
-		socio.setColumns(3);
+		socio.setColumns(4);
 		socio.setEditable(false);
 		socio.setFont(UIManager.getFont("Panel.font"));
 		socio.setMaximumSize(prompt.getPreferredSize());

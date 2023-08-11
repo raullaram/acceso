@@ -21,11 +21,8 @@ public class GuardaHuella {
         //Esta variable res la usaremos únicamente para dar un respuesta final
         String res;
 
-        // ResourceBundle rd = ResourceBundle.getBundle("system");
-        // String serverIp = rd.getString("configuration");
-        // String URL = "http://" + serverIp + ":5000/api/";
-
-        String URL = "http://192.168.0.76:5000/api/";
+        ConfigReader cr = new ConfigReader();
+        String URL = "http://" + cr.getServerIp() + ":5000/api/";
 
         try {
         //Creamos el cliente de conexión al API Restful
