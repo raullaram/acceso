@@ -2,26 +2,38 @@ package net.gymtij;
 
 import com.google.gson.Gson;
 
+
+import java.io.FileReader;
+import java.util.Properties;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import net.gymtij.ConfigReader;
+
 import org.json.JSONObject;
 
 public class ConsultaSocio {
 
-    public static String consultaSocio(Integer id) {
-        // Esta variable res la usaremos únicamente para dar un respuesta final
+    public static Socio consultaSocio(String credencial) {
 
-        String URL = "http://192.168.0.70:5000/api/";
+    // FileReader reader=new FileReader("Configuration.properties");  
+    // Properties p=new Properties();  
+    // p.load(reader);  
+
+        // String URL = "http://" + p.getProperty("serverIp") + ":5000/api/";
+
+        String URL = "http://192.168.0.76:5000/api/";
+
         try {
             // Creamos el cliente de conexión al API Restful
             Client client = ClientBuilder.newClient();
 
             // Creamos el target lo cuál es nuestra URL junto con el nombre del método a llamar
-            WebTarget target = client.target(URL + "socios/credencial/" + id);
+            WebTarget target = client.target(URL + "socios/credencial/" + credencial);
 
             // Creamos nuestra solicitud que realizará el request
             Invocation.Builder solicitud = target.request();
@@ -41,11 +53,11 @@ public class ConsultaSocio {
 
             // Imprimimos el status de la solicitud
             System.out.println("Estatus: " + post.getStatus());
-            
-            
+                       
             switch (post.getStatus()) {
             case 200:
-                return socioResponse.socio.nombre + " " + socioResponse.socio.paterno + " " + socioResponse.socio.materno;
+                System.out.println("************* ok **************");
+                return socioResponse.socio;
             default:
                 break;
             }
@@ -57,6 +69,7 @@ public class ConsultaSocio {
             // En caso de un error en la solicitud, llenaremos res con la exceptión para
             // verificar que sucedió
             String res = e.toString();
+            System.out.println("************* ERROR **************");
             System.out.println(res);
             return null;
 

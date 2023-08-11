@@ -14,6 +14,7 @@ import com.digitalpersona.onetouch.processing.*;
 import net.gymtij.ConsultaSocio;
 // import net.gymtij.GuardaHuella;
 // import net.gymtij.Huella;
+import net.gymtij.Socio;
 
 public class ValidateForm 
 	extends JDialog  
@@ -26,9 +27,9 @@ public class ValidateForm
 	protected JButton reloadFingerprints = new JButton("Actualizar huellas");
 
 
-	public String BuscaSocio(String idSocio) {
-		String consultaSocio = ConsultaSocio.consultaSocio(Integer.parseInt(idSocio));
-		return consultaSocio.toString();
+	public Socio BuscaSocio(String credencial) {
+		Socio consultaSocio = ConsultaSocio.consultaSocio(credencial);
+		return consultaSocio;
 	}
 
     public ValidateForm(Frame owner) {

@@ -2,6 +2,7 @@ package net.gymtij;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -13,8 +14,14 @@ public class RecuperaHuellas {
 
      public static ArrayList<Huella> recuperaHuellas() {
         //Esta variable res la usaremos únicamente para dar un respuesta final
+
+        // ResourceBundle rd = ResourceBundle.getBundle("system");
+        // String serverIp = rd.getString("configuration");
+        // String URL = "http://" + serverIp + ":5000/api/";
+        // System.out.println("Dirección del Servidor: " + serverIp);
+        String URL = "http://192.168.0.76:5000/api/";
       
-        String URL = "http://192.168.0.70:5000/api/";
+
         try {
         //Creamos el cliente de conexión al API Restful
             Client client = ClientBuilder.newClient();

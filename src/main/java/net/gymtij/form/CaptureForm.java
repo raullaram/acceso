@@ -14,6 +14,7 @@ import com.digitalpersona.onetouch.processing.*;
 import net.gymtij.ConsultaSocio;
 import net.gymtij.GuardaHuella;
 import net.gymtij.Huella;
+import net.gymtij.Socio;
 
 public class CaptureForm 
 	extends JDialog  
@@ -21,6 +22,7 @@ public class CaptureForm
 	private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();
 	public JLabel picture = new JLabel();
 	public JTextField socio = new JTextField();
+	public JTextField credencial = new JTextField();
 	private JTextField nombreSocio = new JTextField();
 	private String[] dedos = {"Pulgar Derecho", "Indice Derecho", "Medio Derecho", "Anular Derecho", "Menique Derecho", "Pulgar Izquierdo", "Indice Izquierdo", "Medio Izquierdo", "Anular Izquierdo", "Menique Izquierdo"};
 	private JComboBox dedo = new JComboBox(dedos);
@@ -28,15 +30,9 @@ public class CaptureForm
 	private JTextArea log = new JTextArea();
 	private JTextField status = new JTextField();
 
-
-	public String BuscaSocio(String idSocio) {
-		String consultaSocio = ConsultaSocio.consultaSocio(Integer.parseInt(idSocio));
-		return consultaSocio.toString();
-	}
-
     public CaptureForm(Frame owner) {
         super (owner, true);
-        setTitle("Enrolamiento de Huellas");
+        setTitle("Enrolamiento de Huellas de Socios");
 
 		setLayout(new BorderLayout());
 		rootPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -66,16 +62,25 @@ public class CaptureForm
 		status.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		status.setFont(UIManager.getFont("Panel.font"));
 		
-		socio.setColumns(8);
-		socio.setEditable(true);
+		credencial.setColumns(8);
+		credencial.setEditable(true);
+		credencial.setFont(UIManager.getFont("Panel.font"));
+		credencial.setMaximumSize(prompt.getPreferredSize());
+		credencial.setBorder(
+				BorderFactory.createCompoundBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 00, 0, 0), "Credencial:"),
+					BorderFactory.createLoweredBevelBorder()
+				));
+
+		socio.setColumns(3);
+		socio.setEditable(false);
 		socio.setFont(UIManager.getFont("Panel.font"));
 		socio.setMaximumSize(prompt.getPreferredSize());
 		socio.setBorder(
 				BorderFactory.createCompoundBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), "Credencial:"),
+					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 00, 0, 0), "Id:"),
 					BorderFactory.createLoweredBevelBorder()
 				));
-
 		
 		dedo.setEditable(true);
 		dedo.setFont(UIManager.getFont("Panel.font"));
@@ -85,11 +90,11 @@ public class CaptureForm
 					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), "Dedo:"),
 					BorderFactory.createLoweredBevelBorder()
 				));
-
-		nombreSocio.setColumns(20);
+	
+		nombreSocio.setColumns(50);
 		nombreSocio.setEditable(false);
 		nombreSocio.setFont(UIManager.getFont("Panel.font"));
-		nombreSocio.setMaximumSize(prompt.getPreferredSize());
+		//nombreSocio.setMaximumSize(prompt.getPreferredSize());
 		nombreSocio.setBorder(
 				BorderFactory.createCompoundBorder(
 					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), "Nombre:"),
@@ -132,9 +137,13 @@ public class CaptureForm
 		consulta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { 
 				setVisible(true); 				
-				nombreSocio.setText(BuscaSocio(socio.getText().toString()));
+				System.out.println("CREDENCIAL del socio " + credencial.getText().toString() + "*****");
+				Socio buscaSocio = ConsultaSocio.consultaSocio(credencial.getText().toString());
+				System.out.println("NOMBRE del socio " + buscaSocio.nombre + "*****");
+				setSocio(buscaSocio.id.toString());
+				setNombreSocio(buscaSocio.nombre + " " + buscaSocio.paterno + " " + buscaSocio.materno);
 				registra.setEnabled(true);
-				// System.out.println("NOMBRE del socio " + socio.getText().toString() + "*****");
+				System.out.println("NOMBRE del socio " + socio.getText().toString() + "*****");
 			}
 
 			}
@@ -157,9 +166,11 @@ public class CaptureForm
 		
 		JPanel busca = new JPanel(new BorderLayout());
 		busca.setBackground(Color.getColor("control"));
-		busca.add(socio, BorderLayout.LINE_START);
-		busca.add(nombreSocio, BorderLayout.CENTER);
-		busca.add(consulta, BorderLayout.LINE_END);
+		busca.add(credencial, BorderLayout.LINE_START);
+		busca.add(socio, BorderLayout.CENTER);
+		busca.add(nombreSocio, BorderLayout.LINE_END);
+		busca.add(consulta, BorderLayout.SOUTH);
+		
 
 		JPanel bottom = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 		bottom.setBackground(Color.getColor("control"));
@@ -260,6 +271,10 @@ public class CaptureForm
 	
 	public JTextField getSocio() {
 		return socio;
+	}
+
+	public void setCredencial(String string) {
+		credencial.setText(string);
 	}
 
 	public void setNombreSocio(String string) {

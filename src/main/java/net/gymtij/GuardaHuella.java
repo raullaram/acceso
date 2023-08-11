@@ -3,6 +3,8 @@ package net.gymtij;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.util.ResourceBundle;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -18,7 +20,13 @@ public class GuardaHuella {
     public static void guardaHuella(Integer socioId, Integer dedo, String huella) {
         //Esta variable res la usaremos únicamente para dar un respuesta final
         String res;
-        String URL = "http://192.168.0.70:5000/api/";
+
+        // ResourceBundle rd = ResourceBundle.getBundle("system");
+        // String serverIp = rd.getString("configuration");
+        // String URL = "http://" + serverIp + ":5000/api/";
+
+        String URL = "http://192.168.0.76:5000/api/";
+
         try {
         //Creamos el cliente de conexión al API Restful
             Client client = ClientBuilder.newClient();
