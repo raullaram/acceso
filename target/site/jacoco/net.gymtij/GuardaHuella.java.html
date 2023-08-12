@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GuardaHuella.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">acceso</a> &gt; <a href="index.source.html" class="el_package">net.gymtij</a> &gt; <span class="el_source">GuardaHuella.java</span></div><h1>GuardaHuella.java</h1><pre class="source lang-java linenums">package net.gymtij;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.util.ResourceBundle;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+import org.apache.http.client.entity.EntityBuilder;
+
+
+<span class="nc" id="L18">public class GuardaHuella {</span>
+
+    public static void guardaHuella(Integer socioId, Integer dedo, String huella) {
+        //Esta variable res la usaremos únicamente para dar un respuesta final
+        String res;
+
+<span class="nc" id="L24">        ConfigReader cr = new ConfigReader();</span>
+<span class="nc" id="L25">        String URL = &quot;http://&quot; + cr.getServerIp() + &quot;:5000/api/&quot;;</span>
+
+        try {
+        //Creamos el cliente de conexión al API Restful
+<span class="nc" id="L29">            Client client = ClientBuilder.newClient();</span>
+
+        //Creamos el target lo cuál es nuestra URL junto con el nombre del método a llamar
+<span class="nc" id="L32">            WebTarget target = client.target(URL + &quot;huellas/add/&quot;);</span>
+
+        //Creamos nuestra solicitud que realizará el request
+<span class="nc" id="L35">            Invocation.Builder solicitud = target.request().header(&quot;Authorization&quot;, &quot;Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsInVzdWFyaW9JZCI6MSwiaXAiOiI6OmZmZmY6MTkyLjE2OC4wLjEzMCIsImxvZ2luRGF0ZSI6IjIwMjMtMDUtMTFUMDQ6MTg6NDcuNjc5WiIsImxhc3RDb25uZWN0aW9uIjoiMjAyMy0wNS0xMVQwNDoxODo0Ny42NzlaIiwidG9rZW4iOiJlNDQzZThmNS1kYWYzLTQ5MmEtYTgzMC1mY2MyMzNhYTE3NzQiLCJ1cGRhdGVkQXQiOiIyMDIzLTA1LTExVDA0OjE4OjQ3LjY3OVoiLCJjcmVhdGVkQXQiOiIyMDIzLTA1LTExVDA0OjE4OjQ3LjY3OVoifQ.NsV3EN31yJAyF2wA8TqoJlXQkvdIr3hUt0DI-r8yU_k&quot;);</span>
+
+
+        //Creamos y llenamos nuestro objeto BaseReq con los datos que solicita el API
+<span class="nc" id="L39">            BaseReqHuella req = new BaseReqHuella();</span>
+<span class="nc" id="L40">            req.setSocioId(socioId);</span>
+<span class="nc" id="L41">            req.setDedo(dedo);</span>
+<span class="nc" id="L42">            req.setHuella(huella);</span>
+
+        //Convertimos el objeto req a un json
+<span class="nc" id="L45">            Gson gson = new Gson();</span>
+<span class="nc" id="L46">            String jsonString = gson.toJson(req);</span>
+            // System.out.println(jsonString);
+        //Enviamos nuestro json vía post al API Restful
+            // Response post = solicitud.get();
+            // Response post = solicitud.post(Entity.json(jsonString));
+<span class="nc" id="L51">            Response post = solicitud.post(Entity.json(jsonString));</span>
+
+            // System.out.println(&quot;RES &quot;+post.toString());
+
+             //Recibimos la respuesta y la leemos en una clase de tipo String, 
+            //  en caso de que el json sea tipo json y no string, 
+            //  debemos usar la clase de tipo JsonObject.class en lugar de String.class
+            // String resJson =post.readEntity(String.class);
+<span class="nc" id="L59">            String resJson = post.readEntity(String.class);</span>
+<span class="nc" id="L60">            res = resJson ;</span>
+<span class="nc" id="L61">            System.out.println(&quot;json &quot;+ resJson);</span>
+       
+            // HuellaResponse huellaResponse = gson.fromJson(resJson, HuellaResponse.class);
+<span class="nc" id="L64">            HuellaResponse huellaResponse = gson.fromJson(resJson, HuellaResponse.class);</span>
+            // System.out.println(&quot;Huella: &quot; + huellaResponse.toString());
+
+
+        //Imprimimos el status de la solicitud
+<span class="nc" id="L69">            System.out.println(&quot;Estatus: &quot; + post.getStatus());</span>
+
+            // switch (post.getStatus()) { 
+            //         case 200:
+            //                 res = resJson;
+            //                 break;
+            //     default:
+            //                 // res = &quot;Error&quot;;
+            //                 break; 
+            //                         }
+
+<span class="nc" id="L80">        } catch (Exception e) { </span>
+
+<span class="nc" id="L82">            e.printStackTrace();</span>
+        //En caso de un error en la solicitud, llenaremos res con la exceptión para verificar que sucedió
+<span class="nc" id="L84">            res = e.toString();</span>
+        } 
+<span class="nc" id="L86">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

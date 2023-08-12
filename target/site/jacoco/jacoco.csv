@@ -1,0 +1,58 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+acceso,net.gymtij.form,ValidateForm.new DPFPDataAdapter() {...},13,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.new ActionListener() {...},89,0,4,0,14,0,4,0,2,0
+acceso,net.gymtij.form,ValidateForm.new ComponentAdapter() {...},17,0,0,0,6,0,3,0,3,0
+acceso,net.gymtij.form,ValidateForm.new DPFPSensorAdapter() {...},18,0,0,0,5,0,3,0,3,0
+acceso,net.gymtij.form,ValidateForm.new DPFPReaderStatusAdapter() {...},18,0,0,0,5,0,3,0,3,0
+acceso,net.gymtij.form,VerificationForm,83,0,4,0,24,0,7,0,5,0
+acceso,net.gymtij.form,ValidateForm.new DPFPImageQualityAdapter() {...},13,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,SocioHuellaForm,76,0,4,0,23,0,7,0,5,0
+acceso,net.gymtij.form,SocioHuellaForm.new SwingWorker() {...},96,0,4,0,24,0,5,0,3,0
+acceso,net.gymtij.form,CaptureForm.new DPFPImageQualityAdapter() {...},13,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,MainForm.TemplateFileFilter,13,0,0,0,3,0,3,0,3,0
+acceso,net.gymtij.form,CaptureForm.new DPFPReaderStatusAdapter() {...},18,0,0,0,5,0,3,0,3,0
+acceso,net.gymtij.form,ValidateForm.6.new Runnable() {...},27,0,2,0,5,0,3,0,2,0
+acceso,net.gymtij.form,CaptureForm.new DPFPSensorAdapter() {...},18,0,0,0,5,0,3,0,3,0
+acceso,net.gymtij.form,ValidateForm.4.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.new ComponentAdapter() {...},17,0,0,0,6,0,3,0,3,0
+acceso,net.gymtij.form,CaptureForm,681,0,0,0,133,0,16,0,16,0
+acceso,net.gymtij.form,CaptureForm.new DPFPDataAdapter() {...},13,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.new ActionListener() {...},93,0,0,0,10,0,2,0,2,0
+acceso,net.gymtij.form,ValidateForm.new ActionListener() {...},11,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.new ActionListener() {...},11,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,ValidateForm.3.new Runnable() {...},27,0,0,0,5,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.5.new Runnable() {...},27,0,0,0,5,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.7.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.7.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,EnrollmentForm,108,0,5,0,32,0,7,0,4,0
+acceso,net.gymtij.form,SocioHuellaForm.1.new Callable() {...},23,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,MainForm,176,0,0,0,42,0,7,0,7,0
+acceso,net.gymtij.form,MainForm.new ActionListener() {...},9,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,MainForm.new PropertyChangeListener() {...},23,0,4,0,5,0,4,0,2,0
+acceso,net.gymtij.form,MainForm.new Runnable() {...},6,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,ValidateForm.5.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,ValidateForm.5.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,VerificationForm.2.new Callable() {...},23,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,MainForm.new ActionListener() {...},10,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,VerificationForm.new SwingWorker() {...},108,0,6,0,28,0,6,0,3,0
+acceso,net.gymtij.form,MainForm.new ActionListener() {...},10,0,0,0,2,0,2,0,2,0
+acceso,net.gymtij.form,VerificationForm.new ActionListener() {...},17,0,0,0,4,0,2,0,2,0
+acceso,net.gymtij.form,ValidateForm,337,0,0,0,79,0,12,0,12,0
+acceso,net.gymtij.form,ValidateForm.4.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.6.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.6.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij.form,CaptureForm.8.new Runnable() {...},27,0,2,0,5,0,3,0,2,0
+acceso,net.gymtij,HuellaResponse,3,0,0,0,1,0,1,0,1,0
+acceso,net.gymtij,RecuperaHuellas,83,0,0,0,17,0,2,0,2,0
+acceso,net.gymtij,GuardaHuella,103,0,0,0,22,0,2,0,2,0
+acceso,net.gymtij,BaseReqHuella,24,0,0,0,11,0,7,0,7,0
+acceso,net.gymtij,ConsultaSocio,90,0,2,0,21,0,3,0,2,0
+acceso,net.gymtij,App,8,0,0,0,3,0,2,0,2,0
+acceso,net.gymtij,HuellasResponse,3,0,0,0,1,0,1,0,1,0
+acceso,net.gymtij,BaseReq,10,0,0,0,5,0,3,0,3,0
+acceso,net.gymtij,ConfigReader,57,0,4,0,17,0,5,0,3,0
+acceso,net.gymtij,SocioResponse,3,0,0,0,1,0,1,0,1,0
+acceso,net.gymtij,Huella,24,0,0,0,11,0,7,0,7,0
+acceso,net.gymtij,Torniquete,65,0,8,0,17,0,6,0,2,0
+acceso,net.gymtij,Socio,3,0,0,0,2,0,1,0,1,0
+acceso,net.gymtij,App.new Runnable() {...},6,0,0,0,3,0,2,0,2,0

@@ -15,11 +15,14 @@ public class ConfigReader {
 		
 	    	// String propertyFilePath = "./Configuration.properties";
 	        try {
-	            reader = new BufferedReader(new FileReader("src\\main\\java\\net\\gymtij\\Configuration.properties"));
+				
+				
+				// reader = new BufferedReader(new FileReader("src\\main\\resources\\Configuration.properties"));
+				reader = new BufferedReader(new FileReader("src\\main\\resources\\Configuration.properties"));
 	            properties = new Properties();
 	            try {
 	                properties.load(reader);
-	                reader.close();
+	                reader.close(); 
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }

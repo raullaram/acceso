@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnrollmentForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">acceso</a> &gt; <a href="index.source.html" class="el_package">net.gymtij.form</a> &gt; <span class="el_source">EnrollmentForm.java</span></div><h1>EnrollmentForm.java</h1><pre class="source lang-java linenums">package net.gymtij.form;
+
+import com.digitalpersona.onetouch.*;
+import com.digitalpersona.onetouch.processing.*;
+import java.awt.*;
+import java.util.Base64;
+
+import javax.swing.JOptionPane;
+
+public class EnrollmentForm extends CaptureForm
+{
+<span class="nc" id="L12">	private DPFPEnrollment enroller = DPFPGlobal.getEnrollmentFactory().createEnrollment();</span>
+	
+	EnrollmentForm(Frame owner) {
+<span class="nc" id="L15">		super(owner);</span>
+<span class="nc" id="L16">	}</span>
+	
+	@Override protected void init()
+	{
+<span class="nc" id="L20">		super.init();</span>
+<span class="nc" id="L21">		this.setTitle(&quot;Enrolamiento de huellas&quot;);</span>
+<span class="nc" id="L22">		updateStatus();</span>
+<span class="nc" id="L23">	}</span>
+
+	@Override protected void process(DPFPSample sample) {
+<span class="nc" id="L26">		super.process(sample);</span>
+		// Process the sample and create a feature set for the enrollment purpose.
+<span class="nc" id="L28">		DPFPFeatureSet features = extractFeatures(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);</span>
+
+		// Check quality of the sample and add to enroller if it's good
+<span class="nc bnc" id="L31" title="All 2 branches missed.">		if (features != null) try</span>
+		{
+<span class="nc" id="L33">			makeReport(&quot;Configuración activada.&quot;);</span>
+<span class="nc" id="L34">			enroller.addFeatures(features);		// Add feature set to template.</span>
+<span class="nc" id="L35">		}</span>
+<span class="nc" id="L36">		catch (DPFPImageQualityException ex) { }</span>
+		finally {
+<span class="nc" id="L38">			updateStatus();</span>
+
+			// Check if template has been created.
+<span class="nc bnc" id="L41" title="All 3 branches missed.">			switch(enroller.getTemplateStatus())</span>
+			{
+				case TEMPLATE_STATUS_READY:	// report success and stop capturing
+<span class="nc" id="L44">					stop();</span>
+<span class="nc" id="L45">					((MainForm)getOwner()).setTemplate(enroller.getTemplate());</span>
+
+<span class="nc" id="L47">					DPFPTemplate template = enroller.getTemplate();</span>
+<span class="nc" id="L48">					byte[] bytes = template.serialize();</span>
+<span class="nc" id="L49">					String string = Base64.getEncoder().encodeToString(bytes);</span>
+<span class="nc" id="L50">					setPrompt(&quot;Click Close, and then click Fingerprint Verification. Base 64: &quot;+string);</span>
+<span class="nc" id="L51">					break;</span>
+
+				case TEMPLATE_STATUS_FAILED:	// report failure and restart capturing
+<span class="nc" id="L54">					enroller.clear();</span>
+<span class="nc" id="L55">					stop();</span>
+<span class="nc" id="L56">					updateStatus();</span>
+<span class="nc" id="L57">					((MainForm)getOwner()).setTemplate(null);</span>
+<span class="nc" id="L58">					JOptionPane.showMessageDialog(EnrollmentForm.this, &quot;La lectura de huella no es adecuada.&quot;, &quot;Enrolamiento&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L59">					start();</span>
+					break;
+			}
+		}
+<span class="nc" id="L63">	}</span>
+	
+	private void updateStatus()
+	{
+		// Show number of samples needed.
+<span class="nc" id="L68">		setStatus(String.format(&quot;Huellas por dedo necesarias: %1$s&quot;, enroller.getFeaturesNeeded()));</span>
+<span class="nc" id="L69">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

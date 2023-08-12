@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SocioHuellaForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">acceso</a> &gt; <a href="index.source.html" class="el_package">net.gymtij.form</a> &gt; <span class="el_source">SocioHuellaForm.java</span></div><h1>SocioHuellaForm.java</h1><pre class="source lang-java linenums">package net.gymtij.form;
+
+import com.digitalpersona.onetouch.*;
+import com.digitalpersona.onetouch.verification.*;
+
+import net.gymtij.Huella;
+import net.gymtij.RecuperaHuellas;
+
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingWorker;
+
+public class SocioHuellaForm extends CaptureForm {
+<span class="nc" id="L24">	private DPFPVerification verificator = DPFPGlobal.getVerificationFactory().createVerification();</span>
+
+<span class="nc" id="L26">	ArrayList&lt;Huella&gt; huellas = RecuperaHuellas.recuperaHuellas();</span>
+
+	SocioHuellaForm(Frame owner) {
+<span class="nc" id="L29">		super(owner);</span>
+<span class="nc" id="L30">	}</span>
+
+	@Override
+	protected void init() {
+<span class="nc" id="L34">		super.init();</span>
+<span class="nc" id="L35">		this.setTitle(&quot;Consulta de Socio&quot;);</span>
+<span class="nc" id="L36">		updateStatus(0);</span>
+<span class="nc" id="L37">	}</span>
+
+	protected boolean processFingerprint(DPFPFeatureSet features, String base64) {
+
+		// System.out.println(&quot;huella &quot;+ base64);
+		// String base64 =
+		// &quot;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&quot;;
+
+<span class="nc" id="L45">		byte[] bytes = Base64.getDecoder().decode(base64);</span>
+<span class="nc" id="L46">		DPFPTemplate template = DPFPGlobal.getTemplateFactory().createTemplate(bytes);</span>
+
+		// Compare the feature set with our template
+		// DPFPVerificationResult result =
+		// verificator.verify(features, ((MainForm)getOwner()).getTemplate());
+
+<span class="nc" id="L52">		DPFPVerificationResult result = verificator.verify(features, template);</span>
+<span class="nc" id="L53">		updateStatus(result.getFalseAcceptRate());</span>
+
+		// Check if the number is the correct answer
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		if (result.isVerified()) {</span>
+<span class="nc" id="L57">			return true;</span>
+		} else {
+<span class="nc" id="L59">			throw new RuntimeException();</span>
+		}
+
+	}
+
+	@Override
+	protected void process(DPFPSample sample) {
+<span class="nc" id="L66">		super.process(sample);</span>
+
+		// Process the sample and create a feature set for the enrollment purpose.
+<span class="nc" id="L69">		DPFPFeatureSet features = extractFeatures(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);</span>
+
+		// Check quality of the sample and start verification if it's good
+<span class="nc bnc" id="L72" title="All 2 branches missed.">		if (features != null) {</span>
+
+<span class="nc" id="L74">			new SwingWorker&lt;Boolean, Void&gt;() {</span>
+
+				@Override
+				protected Boolean doInBackground() {
+
+<span class="nc" id="L79">					long start = System.currentTimeMillis();</span>
+<span class="nc" id="L80">					Boolean isVerified = false;</span>
+
+					// Get the number of cores of the current computer
+<span class="nc" id="L83">					int numCores = Runtime.getRuntime().availableProcessors();</span>
+
+					// Create a thread pool with the size of the number of cores
+<span class="nc" id="L86">					ExecutorService executor = new ThreadPoolExecutor(numCores, Integer.MAX_VALUE, 1, TimeUnit.DAYS,</span>
+<span class="nc" id="L87">							new LinkedBlockingQueue&lt;&gt;());</span>
+
+					// System.out.println(&quot;Number of cores: &quot; + numCores);
+
+					// Create a list of tasks to submit to the thread pool
+<span class="nc" id="L92">					List&lt;Callable&lt;Boolean&gt;&gt; taskList = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">					for (Huella huella : huellas) {</span>
+
+						// Define the method you want to execute
+<span class="nc" id="L97">						Callable&lt;Boolean&gt; myMethodTask = new Callable&lt;Boolean&gt;() {</span>
+							@Override
+							public Boolean call() {
+
+<span class="nc" id="L101">								return processFingerprint(features, huella.huella);</span>
+							}
+						};
+
+<span class="nc" id="L105">						taskList.add(myMethodTask);</span>
+					}
+
+					try {
+						// Submit the tasks to the thread pool and get the result of the first completed
+						// task
+<span class="nc" id="L111">						isVerified = executor.invokeAny(taskList);</span>
+
+						// Shutdown the executor once all tasks are complete
+<span class="nc" id="L114">						executor.shutdown();</span>
+
+<span class="nc" id="L116">					} catch (Exception e) {</span>
+						// Handle the exception thrown by the task
+						// e.printStackTrace();
+					}
+<span class="nc" id="L120">					System.out.println(System.currentTimeMillis() - start);</span>
+<span class="nc" id="L121">					return isVerified;</span>
+				}
+
+				protected void done() {
+					Boolean isVerified;
+					try {
+<span class="nc" id="L127">						isVerified = get();</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">						if (isVerified) {</span>
+<span class="nc" id="L130">							makeReport(&quot;Acceso autorizado.&quot;);</span>
+<span class="nc" id="L131">							Toolkit.getDefaultToolkit().beep();</span>
+
+<span class="nc" id="L133">						} else {</span>
+<span class="nc" id="L134">							makeReport(&quot;No cuenta con membresia vigente&quot;);</span>
+						}
+
+<span class="nc" id="L137">					} catch (InterruptedException | ExecutionException e) {</span>
+						// TODO Auto-generated catch block
+<span class="nc" id="L139">						e.printStackTrace();</span>
+					}
+
+<span class="nc" id="L142">				};</span>
+
+<span class="nc" id="L144">			}.execute();</span>
+
+			// for (int i = 0; i &lt; 400; i++) {
+
+			// String base64 =
+			// &quot;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&quot;;
+
+			// byte[] bytes = Base64.getDecoder().decode(base64);
+			// DPFPTemplate template =
+			// DPFPGlobal.getTemplateFactory().createTemplate(bytes);
+
+			// // Compare the feature set with our template
+			// // DPFPVerificationResult result =
+			// // verificator.verify(features, ((MainForm)getOwner()).getTemplate());
+
+			// DPFPVerificationResult result = verificator.verify(features, template);
+			// updateStatus(result.getFalseAcceptRate());
+
+			// if (result.isVerified()) {
+			// isVerified = true;
+			// break;
+			// }
+
+			// }
+
+		}
+<span class="nc" id="L170">	}</span>
+
+	private void updateStatus(int FAR) {
+		// Show &quot;False accept rate&quot; value
+<span class="nc" id="L174">		setStatus(String.format(&quot;False Accept Rate (FAR) = %1$s&quot;, FAR));</span>
+<span class="nc" id="L175">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

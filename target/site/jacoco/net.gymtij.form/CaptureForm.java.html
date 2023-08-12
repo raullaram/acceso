@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CaptureForm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">acceso</a> &gt; <a href="index.source.html" class="el_package">net.gymtij.form</a> &gt; <span class="el_source">CaptureForm.java</span></div><h1>CaptureForm.java</h1><pre class="source lang-java linenums">package net.gymtij.form;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Base64;
+
+import javax.swing.*;
+
+import com.digitalpersona.onetouch.*;
+import com.digitalpersona.onetouch.capture.*;
+import com.digitalpersona.onetouch.capture.event.*;
+import com.digitalpersona.onetouch.processing.*;
+
+import net.gymtij.ConsultaSocio;
+import net.gymtij.GuardaHuella;
+import net.gymtij.Huella;
+import net.gymtij.Socio;
+
+public class CaptureForm 
+	extends JDialog  
+{
+<span class="nc" id="L22">	private DPFPCapture capturer = DPFPGlobal.getCaptureFactory().createCapture();</span>
+<span class="nc" id="L23">	public JLabel picture = new JLabel();</span>
+<span class="nc" id="L24">	public JTextField socio = new JTextField();</span>
+<span class="nc" id="L25">	public JTextField credencial = new JTextField();</span>
+<span class="nc" id="L26">	private JTextField nombreSocio = new JTextField();</span>
+<span class="nc" id="L27">	private String[] dedos = {&quot;Pulgar Derecho&quot;, &quot;Indice Derecho&quot;, &quot;Medio Derecho&quot;, &quot;Anular Derecho&quot;, &quot;Menique Derecho&quot;, &quot;Pulgar Izquierdo&quot;, &quot;Indice Izquierdo&quot;, &quot;Medio Izquierdo&quot;, &quot;Anular Izquierdo&quot;, &quot;Menique Izquierdo&quot;};</span>
+<span class="nc" id="L28">	private JComboBox dedo = new JComboBox(dedos);</span>
+<span class="nc" id="L29">	private JTextField prompt = new JTextField();</span>
+<span class="nc" id="L30">	private JTextArea log = new JTextArea();</span>
+<span class="nc" id="L31">	private JTextField status = new JTextField();</span>
+
+    public CaptureForm(Frame owner) {
+<span class="nc" id="L34">        super (owner, true);</span>
+<span class="nc" id="L35">        setTitle(&quot;Enrolamiento de Huellas de Socios&quot;);</span>
+
+<span class="nc" id="L37">		setLayout(new BorderLayout());</span>
+<span class="nc" id="L38">		rootPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+
+<span class="nc" id="L40">		picture.setPreferredSize(new Dimension(240, 300));</span>
+<span class="nc" id="L41">		picture.setBorder(BorderFactory.createLoweredBevelBorder());</span>
+
+<span class="nc" id="L43">		prompt.setColumns(40);</span>
+<span class="nc" id="L44">		prompt.setMaximumSize(prompt.getPreferredSize());</span>
+<span class="nc" id="L45">		prompt.setBorder(</span>
+<span class="nc" id="L46">				BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L47">					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), &quot;Prompt:&quot;),</span>
+<span class="nc" id="L48">					BorderFactory.createLoweredBevelBorder()</span>
+				));
+
+<span class="nc" id="L51">		log.setColumns(40);</span>
+<span class="nc" id="L52">		log.setEditable(false);</span>
+<span class="nc" id="L53">		log.setFont(UIManager.getFont(&quot;Panel.font&quot;));</span>
+<span class="nc" id="L54">		JScrollPane logpane = new JScrollPane(log);</span>
+<span class="nc" id="L55">		logpane.setBorder(</span>
+<span class="nc" id="L56">				BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L57">					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), &quot;Status:&quot;),</span>
+<span class="nc" id="L58">					BorderFactory.createLoweredBevelBorder()</span>
+				));
+		
+<span class="nc" id="L61">		status.setEditable(false);</span>
+<span class="nc" id="L62">		status.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L63">		status.setFont(UIManager.getFont(&quot;Panel.font&quot;));</span>
+		
+<span class="nc" id="L65">		credencial.setColumns(6);</span>
+<span class="nc" id="L66">		credencial.setEditable(true);</span>
+<span class="nc" id="L67">		credencial.setFont(UIManager.getFont(&quot;Panel.font&quot;));</span>
+<span class="nc" id="L68">		credencial.setMaximumSize(prompt.getPreferredSize());</span>
+<span class="nc" id="L69">		credencial.setBorder(</span>
+<span class="nc" id="L70">				BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L71">					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 00, 0, 0), &quot;Credencial:&quot;),</span>
+<span class="nc" id="L72">					BorderFactory.createLoweredBevelBorder()</span>
+				));
+
+<span class="nc" id="L75">		socio.setColumns(4);</span>
+<span class="nc" id="L76">		socio.setEditable(false);</span>
+<span class="nc" id="L77">		socio.setFont(UIManager.getFont(&quot;Panel.font&quot;));</span>
+<span class="nc" id="L78">		socio.setMaximumSize(prompt.getPreferredSize());</span>
+<span class="nc" id="L79">		socio.setBorder(</span>
+<span class="nc" id="L80">				BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L81">					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 00, 0, 0), &quot;Id:&quot;),</span>
+<span class="nc" id="L82">					BorderFactory.createLoweredBevelBorder()</span>
+				));
+		
+<span class="nc" id="L85">		dedo.setEditable(true);</span>
+<span class="nc" id="L86">		dedo.setFont(UIManager.getFont(&quot;Panel.font&quot;));</span>
+<span class="nc" id="L87">		dedo.setMaximumSize(prompt.getPreferredSize());</span>
+<span class="nc" id="L88">		dedo.setBorder(</span>
+<span class="nc" id="L89">				BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L90">					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), &quot;Dedo:&quot;),</span>
+<span class="nc" id="L91">					BorderFactory.createLoweredBevelBorder()</span>
+				));
+	
+<span class="nc" id="L94">		nombreSocio.setColumns(50);</span>
+<span class="nc" id="L95">		nombreSocio.setEditable(false);</span>
+<span class="nc" id="L96">		nombreSocio.setFont(UIManager.getFont(&quot;Panel.font&quot;));</span>
+		//nombreSocio.setMaximumSize(prompt.getPreferredSize());
+<span class="nc" id="L98">		nombreSocio.setBorder(</span>
+<span class="nc" id="L99">				BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L100">					BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), &quot;Nombre:&quot;),</span>
+<span class="nc" id="L101">					BorderFactory.createLoweredBevelBorder()</span>
+				));
+		
+		
+
+<span class="nc" id="L106">		JButton registra = new JButton(&quot;Registra&quot;);</span>
+<span class="nc" id="L107">		registra.setEnabled(false);</span>
+<span class="nc" id="L108">		registra.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) { 
+<span class="nc" id="L110">			Integer dedoEnroll = dedo.getSelectedIndex() + 1;</span>
+			
+
+<span class="nc" id="L113">			DPFPTemplate  template = ((MainForm)getOwner()).getTemplate();</span>
+			
+
+<span class="nc bnc" id="L116" title="All 4 branches missed.">			if ( !socio.getText().equals(&quot;&quot;) &amp;&amp; template != null ) {</span>
+<span class="nc" id="L117">				byte[] bytes = template.serialize();</span>
+				
+<span class="nc" id="L119">				String base64 = Base64.getEncoder().encodeToString(bytes);</span>
+
+<span class="nc" id="L121">				System.out.println(&quot;Dedo &quot;+dedoEnroll);</span>
+<span class="nc" id="L122">			System.out.println(&quot;Socio &quot;+socio.getText());</span>
+<span class="nc" id="L123">			System.out.println(&quot;Base64 &quot;+base64);</span>
+<span class="nc" id="L124">				 GuardaHuella.guardaHuella(Integer.parseInt(socio.getText()), dedoEnroll, base64);</span>
+<span class="nc" id="L125">				 JOptionPane.showMessageDialog(CaptureForm.this, &quot;Guardado.&quot;, &quot;Enrolamiento&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc" id="L126">			}</span>
+			else {
+<span class="nc" id="L128">				JOptionPane.showMessageDialog(CaptureForm.this, &quot;Proporciona toda la información.&quot;, &quot;Enrolamiento&quot;, JOptionPane.ERROR_MESSAGE);</span>
+			}
+
+			// registra.setEnabled(false);
+
+<span class="nc" id="L133">			}});</span>
+
+
+<span class="nc" id="L136">			JButton consulta = new JButton(&quot;Consulta&quot;);</span>
+<span class="nc" id="L137">		consulta.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) { 
+<span class="nc" id="L139">				setVisible(true); 				</span>
+<span class="nc" id="L140">				System.out.println(&quot;CREDENCIAL del socio &quot; + credencial.getText().toString() + &quot;*****&quot;);</span>
+<span class="nc" id="L141">				Socio buscaSocio = ConsultaSocio.consultaSocio(credencial.getText().toString());</span>
+<span class="nc" id="L142">				System.out.println(&quot;NOMBRE del socio &quot; + buscaSocio.nombre + &quot;*****&quot;);</span>
+<span class="nc" id="L143">				setSocio(buscaSocio.id.toString());</span>
+<span class="nc" id="L144">				setNombreSocio(buscaSocio.nombre + &quot; &quot; + buscaSocio.paterno + &quot; &quot; + buscaSocio.materno);</span>
+<span class="nc" id="L145">				registra.setEnabled(true);</span>
+<span class="nc" id="L146">				System.out.println(&quot;NOMBRE del socio &quot; + socio.getText().toString() + &quot;*****&quot;);</span>
+<span class="nc" id="L147">			}</span>
+
+			}
+			);
+<span class="nc" id="L151">		JButton quit = new JButton(&quot;Close&quot;);</span>
+<span class="nc" id="L152">        quit.addActionListener(new ActionListener() {</span>
+<span class="nc" id="L153">            public void actionPerformed(ActionEvent e) { setVisible(false); }});</span>
+
+		
+<span class="nc" id="L156">		JPanel center = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L157">		center.setBackground(Color.getColor(&quot;control&quot;));</span>
+<span class="nc" id="L158">		center.add(dedo, BorderLayout.PAGE_START);</span>
+<span class="nc" id="L159">		center.add(picture, BorderLayout.LINE_START);</span>
+<span class="nc" id="L160">		center.add(status, BorderLayout.PAGE_END);</span>
+
+<span class="nc" id="L162">		JPanel right = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L163">		right.setBackground(Color.getColor(&quot;control&quot;));</span>
+<span class="nc" id="L164">		right.add(prompt, BorderLayout.NORTH);</span>
+<span class="nc" id="L165">		right.add(logpane, BorderLayout.CENTER);</span>
+		
+<span class="nc" id="L167">		JPanel busca = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L168">		busca.setBackground(Color.getColor(&quot;control&quot;));</span>
+<span class="nc" id="L169">		busca.add(credencial, BorderLayout.LINE_START);</span>
+<span class="nc" id="L170">		busca.add(socio, BorderLayout.CENTER);</span>
+<span class="nc" id="L171">		busca.add(nombreSocio, BorderLayout.LINE_END);</span>
+<span class="nc" id="L172">		busca.add(consulta, BorderLayout.SOUTH);</span>
+		
+
+<span class="nc" id="L175">		JPanel bottom = new JPanel(new FlowLayout(FlowLayout.TRAILING));</span>
+<span class="nc" id="L176">		bottom.setBackground(Color.getColor(&quot;control&quot;));</span>
+<span class="nc" id="L177">		bottom.add(registra);</span>
+<span class="nc" id="L178">		bottom.add(quit);</span>
+
+<span class="nc" id="L180">		setLayout(new BorderLayout());</span>
+<span class="nc" id="L181">		add(busca, BorderLayout.PAGE_START);</span>
+<span class="nc" id="L182">		add(center, BorderLayout.LINE_START);</span>
+<span class="nc" id="L183">		add(right, BorderLayout.LINE_END);</span>
+<span class="nc" id="L184">		add(bottom, BorderLayout.PAGE_END);</span>
+		
+<span class="nc" id="L186">		this.addComponentListener(new ComponentAdapter() {</span>
+			@Override public void componentShown(ComponentEvent e) {
+<span class="nc" id="L188">				init();</span>
+<span class="nc" id="L189">				start();</span>
+<span class="nc" id="L190">			}</span>
+			@Override public void componentHidden(ComponentEvent e) {
+<span class="nc" id="L192">				stop();</span>
+<span class="nc" id="L193">			}</span>
+			
+		});
+		
+<span class="nc" id="L197">		pack();</span>
+<span class="nc" id="L198">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L199">	}</span>
+
+	protected void init()
+	{
+<span class="nc" id="L203">		capturer.addDataListener(new DPFPDataAdapter() {</span>
+			@Override public void dataAcquired(final DPFPDataEvent e) {
+<span class="nc" id="L205">				SwingUtilities.invokeLater(new Runnable() {	public void run() {</span>
+<span class="nc" id="L206">					makeReport(&quot;Huella capturada.&quot;);</span>
+<span class="nc" id="L207">					setPrompt(&quot;Escanea otra huella.&quot;);</span>
+<span class="nc" id="L208">					process(e.getSample());</span>
+<span class="nc" id="L209">				}});</span>
+<span class="nc" id="L210">			}</span>
+		});
+<span class="nc" id="L212">		capturer.addReaderStatusListener(new DPFPReaderStatusAdapter() {</span>
+			@Override public void readerConnected(final DPFPReaderStatusEvent e) {
+<span class="nc" id="L214">				SwingUtilities.invokeLater(new Runnable() {	public void run() {</span>
+<span class="nc" id="L215">		 			makeReport(&quot;El lector de huella esta activo.&quot;);</span>
+<span class="nc" id="L216">				}});</span>
+<span class="nc" id="L217">			}</span>
+			@Override public void readerDisconnected(final DPFPReaderStatusEvent e) {
+<span class="nc" id="L219">				SwingUtilities.invokeLater(new Runnable() {	public void run() {</span>
+<span class="nc" id="L220">					makeReport(&quot;El lector de huella se ha desconectado.&quot;);</span>
+<span class="nc" id="L221">				}});</span>
+<span class="nc" id="L222">			}</span>
+		});
+<span class="nc" id="L224">		capturer.addSensorListener(new DPFPSensorAdapter() {</span>
+			@Override public void fingerTouched(final DPFPSensorEvent e) {
+<span class="nc" id="L226">				SwingUtilities.invokeLater(new Runnable() {	public void run() {</span>
+<span class="nc" id="L227">					makeReport(&quot;Se ha activado el lector de huella.&quot;);</span>
+<span class="nc" id="L228">				}});</span>
+<span class="nc" id="L229">			}</span>
+			@Override public void fingerGone(final DPFPSensorEvent e) {
+<span class="nc" id="L231">				SwingUtilities.invokeLater(new Runnable() {	public void run() {</span>
+<span class="nc" id="L232">					makeReport(&quot;Se ha quitado el dedo del lector.&quot;);</span>
+<span class="nc" id="L233">				}});</span>
+<span class="nc" id="L234">			}</span>
+		});
+<span class="nc" id="L236">		capturer.addImageQualityListener(new DPFPImageQualityAdapter() {</span>
+			@Override public void onImageQuality(final DPFPImageQualityEvent e) {
+<span class="nc" id="L238">				SwingUtilities.invokeLater(new Runnable() {	public void run() {</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">					if (e.getFeedback().equals(DPFPCaptureFeedback.CAPTURE_FEEDBACK_GOOD))</span>
+<span class="nc" id="L240">						makeReport(&quot;La calidad de la huella es adecuada.&quot;);</span>
+					else
+<span class="nc" id="L242">						makeReport(&quot;La calidad de la huella es baja.&quot;);</span>
+<span class="nc" id="L243">				}});</span>
+<span class="nc" id="L244">			}</span>
+		});
+<span class="nc" id="L246">	}</span>
+
+	protected void process(DPFPSample sample)
+	{
+		// Draw fingerprint sample image.
+<span class="nc" id="L251">		drawPicture(convertSampleToBitmap(sample));</span>
+<span class="nc" id="L252">	}</span>
+
+	protected void start()
+	{
+<span class="nc" id="L256">		capturer.startCapture();</span>
+<span class="nc" id="L257">		setPrompt(&quot;Utiliza el lector para registrar tus huellas (4)&quot;);</span>
+<span class="nc" id="L258">	}</span>
+
+	protected void stop()
+	{
+<span class="nc" id="L262">		capturer.stopCapture();</span>
+<span class="nc" id="L263">	}</span>
+
+	public void setStatus(String string) {
+<span class="nc" id="L266">		status.setText(string);</span>
+<span class="nc" id="L267">	}</span>
+	public void setPrompt(String string) {
+<span class="nc" id="L269">		prompt.setText(string);</span>
+<span class="nc" id="L270">	}</span>
+	
+	public JTextField getSocio() {
+<span class="nc" id="L273">		return socio;</span>
+	}
+
+	public void setCredencial(String string) {
+<span class="nc" id="L277">		credencial.setText(string);</span>
+<span class="nc" id="L278">	}</span>
+
+	public void setNombreSocio(String string) {
+<span class="nc" id="L281">		nombreSocio.setText(string);</span>
+<span class="nc" id="L282">	}</span>
+
+	public void setSocio(String string) {
+<span class="nc" id="L285">		socio.setText(string);</span>
+<span class="nc" id="L286">	}</span>
+
+	public void makeReport(String string) {
+<span class="nc" id="L289">		log.append(string + &quot;\n&quot;);</span>
+<span class="nc" id="L290">	}</span>
+	
+	public CaptureForm() {
+<span class="nc" id="L293">		super();</span>
+<span class="nc" id="L294">	}</span>
+	
+
+	public void drawPicture(Image image) {
+<span class="nc" id="L298">		picture.setIcon(new ImageIcon(</span>
+<span class="nc" id="L299">			image.getScaledInstance(picture.getWidth(), picture.getHeight(), Image.SCALE_DEFAULT)));</span>
+<span class="nc" id="L300">	}</span>
+	
+	protected Image convertSampleToBitmap(DPFPSample sample) {
+<span class="nc" id="L303">		return DPFPGlobal.getSampleConversionFactory().createImage(sample);</span>
+	}
+
+	protected DPFPFeatureSet extractFeatures(DPFPSample sample, DPFPDataPurpose purpose)
+	{
+<span class="nc" id="L308">		DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();</span>
+		try {
+<span class="nc" id="L310">			return extractor.createFeatureSet(sample, purpose);</span>
+<span class="nc" id="L311">		} catch (DPFPImageQualityException e) {</span>
+<span class="nc" id="L312">			return null;</span>
+		}
+	}
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

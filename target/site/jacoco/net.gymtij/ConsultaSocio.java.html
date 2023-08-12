@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConsultaSocio.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">acceso</a> &gt; <a href="index.source.html" class="el_package">net.gymtij</a> &gt; <span class="el_source">ConsultaSocio.java</span></div><h1>ConsultaSocio.java</h1><pre class="source lang-java linenums">package net.gymtij;
+
+import com.google.gson.Gson;
+
+
+import java.io.FileReader;
+import java.util.Properties;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+import net.gymtij.ConfigReader;
+
+import org.json.JSONObject;
+
+<span class="nc" id="L19">public class ConsultaSocio {</span>
+
+    public static Socio consultaSocio(String credencial) {
+  
+
+<span class="nc" id="L24">        ConfigReader cr = new ConfigReader();</span>
+<span class="nc" id="L25">        String URL = &quot;http://&quot; + cr.getServerIp() + &quot;:5000/api/&quot;;</span>
+
+        try {
+            // Creamos el cliente de conexión al API Restful
+<span class="nc" id="L29">            Client client = ClientBuilder.newClient();</span>
+
+            // Creamos el target lo cuál es nuestra URL junto con el nombre del método a llamar
+<span class="nc" id="L32">            WebTarget target = client.target(URL + &quot;socios/credencial/&quot; + credencial);</span>
+
+            // Creamos nuestra solicitud que realizará el request
+<span class="nc" id="L35">            Invocation.Builder solicitud = target.request();</span>
+
+            // Convertimos el objeto req a un json
+<span class="nc" id="L38">            Gson gson = new Gson();</span>
+
+            // Enviamos nuestro json vía post al API Restful
+<span class="nc" id="L41">            Response post = solicitud.get();</span>
+           
+<span class="nc" id="L43">            String resJson = post.readEntity(String.class);</span>
+            
+            // Recibimos la respuesta y la leemos en una clase de tipo String, en caso de
+            // que el json sea tipo json y no string, debemos usar la clase de tipo
+            // JsonObject.class en lugar de String.class
+<span class="nc" id="L48">            SocioResponse socioResponse = gson.fromJson(resJson, SocioResponse.class);</span>
+
+            // Imprimimos el status de la solicitud
+<span class="nc" id="L51">            System.out.println(&quot;Estatus: &quot; + post.getStatus());</span>
+                       
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            switch (post.getStatus()) {</span>
+            case 200:
+<span class="nc" id="L55">                System.out.println(&quot;************* ok **************&quot;);</span>
+<span class="nc" id="L56">                return socioResponse.socio;</span>
+            default:
+                break;
+            }
+
+            
+<span class="nc" id="L62">        } catch (Exception e) {</span>
+
+<span class="nc" id="L64">            e.printStackTrace();</span>
+            // En caso de un error en la solicitud, llenaremos res con la exceptión para
+            // verificar que sucedió
+<span class="nc" id="L67">            String res = e.toString();</span>
+<span class="nc" id="L68">            System.out.println(&quot;************* ERROR **************&quot;);</span>
+<span class="nc" id="L69">            System.out.println(res);</span>
+<span class="nc" id="L70">            return null;</span>
+
+        }
+        // Imprimimos la respuesta del API Restful
+<span class="nc" id="L74">        return null;</span>
+        
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
