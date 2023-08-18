@@ -10,7 +10,9 @@ SerialPort[] ports = SerialPort.getCommPorts();
 SerialPort rs485Port = null;
 
 for (SerialPort port : ports) {
-    if (port.getDescriptivePortName().contains("RS485")) {
+    System.out.println(port.getDescriptivePortName());
+     if (port.getDescriptivePortName().contains("RS485")) {           
+        
         rs485Port = port;
         break;
     }
